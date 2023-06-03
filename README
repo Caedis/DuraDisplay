@@ -1,0 +1,9 @@
+A mod to add durability/charge percentages to items
+
+
+## Current Options
+
+* Enable - Enable/Disable entire mod (default: true)
+* TopLeft - Move percentage to top left corner instead of bottom centered (default: false)
+* HideBars - Hide durability/charge bars (default: true)
+* ShowPercentageWhenFull - Show percentage when item is undamaged/full (default: false)
