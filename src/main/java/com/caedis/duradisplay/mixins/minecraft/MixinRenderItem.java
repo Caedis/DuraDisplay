@@ -41,7 +41,7 @@ public abstract class MixinRenderItem {
         nf.setMaximumFractionDigits(0);
     }
 
-    final Class[] ignoredOverlayClasses = new Class[]{ItemIC2.class,};
+    final Class[] ignoredOverlayClasses = new Class[] { ItemIC2.class, };
 
     @Shadow
     private float zLevel;
@@ -53,7 +53,7 @@ public abstract class MixinRenderItem {
             value = "INVOKE",
             target = "Lnet/minecraft/item/Item;showDurabilityBar(Lnet/minecraft/item/ItemStack;)Z"))
     private boolean showDurabilityBar(Item item0, ItemStack stack0, FontRenderer fontRenderer,
-                                      TextureManager textureManager, ItemStack stack, int xPosition, int yPosition, String string) {
+        TextureManager textureManager, ItemStack stack, int xPosition, int yPosition, String string) {
         if (item0 == null) return false;
         if (!DuraDisplayConfig.Enable) return item0.showDurabilityBar(stack0);
         if (Arrays.stream(ignoredOverlayClasses)
@@ -72,7 +72,7 @@ public abstract class MixinRenderItem {
             target = "Lnet/minecraftforge/client/ForgeHooksClient;renderInventoryItem(Lnet/minecraft/client/renderer/RenderBlocks;Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/item/ItemStack;ZFFF)Z",
             ordinal = 0))
     private void renderItemAndEffectIntoGUI(FontRenderer fontRenderer, TextureManager textureManager, ItemStack stack,
-                                            int xPosition, int yPosition, CallbackInfo ci) {
+        int xPosition, int yPosition, CallbackInfo ci) {
         if (!DuraDisplayConfig.Enable) return;
         if (stack == null || stack.getItem() == null || !(stack.getItem() instanceof GT_MetaBase_Item)) return;
         RenderDurabilityText(fontRenderer, stack, xPosition, yPosition);
@@ -112,30 +112,32 @@ public abstract class MixinRenderItem {
             }
         } else if (item instanceof IEnergyContainerItem && stack.hasTagCompound()
             && stack.getTagCompound()
-            .hasKey("Energy")) {
-            IEnergyContainerItem eci = ((IEnergyContainerItem) item);
-            color = 0xFF55FFFF;
-            durability = ((double) eci.getEnergyStored(stack) / eci.getMaxEnergyStored(stack)) * 100;
-            durString = nf.format(durability) + "%";
-        } else if (item instanceof IDarkSteelItem) {
-            if (!stack.hasTagCompound()) return;
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("enderio.darksteel.upgrade.energyUpgrade")) {
-                NBTTagCompound upgrade = nbt.getCompoundTag("enderio.darksteel.upgrade.energyUpgrade");
-                int capacity = upgrade.getInteger("capacity");
-                int energy = upgrade.getInteger("energy");
-                durability = ((double) energy / capacity) * 100;
-                durString = nf.format(durability) + "%";
-                color = 0xFF55FFFF;
-            } else return;
-        } else if (DuraDisplayConfig.ShowPercentageWhenFull || stack.isItemDamaged()) {
-            durability = (1 - item.getDurabilityForDisplay(stack));
-            color = getRGBDurabilityForDisplay(durability);
-            durability *= 100;
-            durString = nf.format(durability) + "%";
-        } else { // not a GT tool nor a damaged item
-            return;
-        }
+                .hasKey("Energy")) {
+                    IEnergyContainerItem eci = ((IEnergyContainerItem) item);
+                    color = 0xFF55FFFF;
+                    durability = ((double) eci.getEnergyStored(stack) / eci.getMaxEnergyStored(stack)) * 100;
+                    durString = nf.format(durability) + "%";
+                } else
+            if (item instanceof IDarkSteelItem) {
+                if (!stack.hasTagCompound()) return;
+                NBTTagCompound nbt = stack.getTagCompound();
+                if (nbt.hasKey("enderio.darksteel.upgrade.energyUpgrade")) {
+                    NBTTagCompound upgrade = nbt.getCompoundTag("enderio.darksteel.upgrade.energyUpgrade");
+                    int capacity = upgrade.getInteger("capacity");
+                    int energy = upgrade.getInteger("energy");
+                    durability = ((double) energy / capacity) * 100;
+                    durString = nf.format(durability) + "%";
+                    color = 0xFF55FFFF;
+                } else return;
+            } else if (stack.isItemStackDamageable()
+                && (DuraDisplayConfig.ShowPercentageWhenFull || stack.isItemDamaged())) {
+                    durability = (1 - item.getDurabilityForDisplay(stack));
+                    color = getRGBDurabilityForDisplay(durability);
+                    durability *= 100;
+                    durString = nf.format(durability) + "%";
+                } else { // not a GT tool nor a damaged item
+                    return;
+                }
 
         int x, y;
         if (DuraDisplayConfig.TopLeft) {
