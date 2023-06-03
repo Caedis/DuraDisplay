@@ -9,7 +9,7 @@ public class DuraDisplayConfig {
     public static boolean Enable = true;
     public static boolean HideBars = true;
     public static boolean TopLeft = false;
-    public static boolean ShowPercentageWhenFull = true;
+    public static boolean ShowPercentageWhenFull = false;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
@@ -25,7 +25,11 @@ public class DuraDisplayConfig {
             Configuration.CATEGORY_GENERAL,
             TopLeft,
             "Move percentage to top left instead of bottom centered ");
-        ShowPercentageWhenFull = configuration.getBoolean("ShowPercentageWhenFull", Configuration.CATEGORY_GENERAL, ShowPercentageWhenFull, "Show percentage when item is undamaged/full");
+        ShowPercentageWhenFull = configuration.getBoolean(
+            "ShowPercentageWhenFull",
+            Configuration.CATEGORY_GENERAL,
+            ShowPercentageWhenFull,
+            "Show percentage when item is undamaged/full");
 
         if (configuration.hasChanged()) {
             configuration.save();
