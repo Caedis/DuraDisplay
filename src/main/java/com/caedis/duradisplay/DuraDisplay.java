@@ -13,6 +13,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
     version = Tags.VERSION,
     name = Tags.MODNAME,
     acceptedMinecraftVersions = "[1.7.10]",
+    guiFactory = "com.caedis.duradisplay.config.GuiFactory",
     dependencies = "required-after:gregtech@[5.09.43.63,);" + " required-after:EnderIO;")
 public class DuraDisplay {
 
@@ -33,4 +34,5 @@ public class DuraDisplay {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
     }
+
 }

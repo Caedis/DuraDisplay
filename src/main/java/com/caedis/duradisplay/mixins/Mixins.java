@@ -16,7 +16,8 @@ public enum Mixins {
     //
 
     // Replace with your own mixins:
-    MixinRenderItem("minecraft.MixinRenderItem", Side.CLIENT, VANILLA);
+    MixinRenderItem("minecraft.MixinRenderItem", Side.CLIENT, VANILLA),
+    MixinEnderIO("enderio.MixinClientProxy", Side.CLIENT, ENDERIO);
     // You may also require multiple mods to be loaded if your mixin requires both
     // GT_Block_Ores_AbstractMixin("gregtech.GT_Block_Ores_AbstractMixin", GREGTECH, VANILLA);
 
