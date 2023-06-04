@@ -24,7 +24,7 @@ public abstract class MixinPoweredItemRenderer {
             shift = At.Shift.AFTER),
         cancellable = true)
     private void renderToInventory(ItemStack stack, RenderBlocks renderBlocks, CallbackInfo callbackInfo) {
-        if (Config.Enable && Config.HideBars) {
+        if (Config.Durability_Enable && Config.Durability_HideBar) {
             callbackInfo.cancel();
         }
     }

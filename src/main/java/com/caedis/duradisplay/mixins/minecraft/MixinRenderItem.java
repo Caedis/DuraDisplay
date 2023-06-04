@@ -17,13 +17,9 @@ import com.caedis.duradisplay.config.Config;
 import com.caedis.duradisplay.render.DurabilityRenderer;
 
 import gregtech.api.items.GT_MetaBase_Item;
-import ic2.core.item.ItemIC2;
 
 @Mixin(value = RenderItem.class)
 public abstract class MixinRenderItem {
-
-    // TODO: refactor all of this
-    final Class[] ignoredOverlayClasses = new Class[] { ItemIC2.class, };
 
     @Shadow
     private float zLevel;
@@ -36,10 +32,10 @@ public abstract class MixinRenderItem {
             target = "Lnet/minecraft/item/Item;showDurabilityBar(Lnet/minecraft/item/ItemStack;)Z"))
     private boolean showDurabilityBar(Item item0, ItemStack stack0, FontRenderer fontRenderer,
         TextureManager textureManager, ItemStack stack, int xPosition, int yPosition, String string) {
-        if (!Config.Enable) return item0.showDurabilityBar(stack0);
+        if (!Config.Durability_Enable && !Config.Charge_Enable) return item0.showDurabilityBar(stack0);
 
-        DurabilityRenderer.RenderDurability(fontRenderer, stack0, xPosition, yPosition, zLevel);
-        return !Config.HideBars && item0.showDurabilityBar(stack0);
+        DurabilityRenderer.Render(fontRenderer, stack0, xPosition, yPosition, zLevel);
+        return !Config.Durability_HideBar && item0.showDurabilityBar(stack0);
     }
 
     // Handle GT Tools
@@ -52,9 +48,9 @@ public abstract class MixinRenderItem {
             ordinal = 0))
     private void renderItemAndEffectIntoGUI(FontRenderer fontRenderer, TextureManager textureManager, ItemStack stack,
         int xPosition, int yPosition, CallbackInfo ci) {
-        if (!Config.Enable) return;
+        if (!Config.Durability_Enable && !Config.Charge_Enable) return;
         if (stack == null || stack.getItem() == null || !(stack.getItem() instanceof GT_MetaBase_Item)) return;
 
-        DurabilityRenderer.RenderDurability(fontRenderer, stack, xPosition, yPosition, zLevel);
+        DurabilityRenderer.Render(fontRenderer, stack, xPosition, yPosition, zLevel);
     }
 }
